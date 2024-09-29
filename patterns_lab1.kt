@@ -82,3 +82,13 @@ class Student(
                 "Почта: $email")
     }
 }
+
+fun main() {
+    val st1 = Student(1, "Петр", "Петров", "Петрович", "+79999999991", "@petr", "petr.gmail.com")
+    val st2 = Student(2, "Иван", "Иванов", "Иванович", "+79999999992", "@ivan", "ivan.gmail.com")
+    val st3 = Student(2, "Егор", "Егоров", "Егорович", "+79999999993", "@egor", "egor.gmail.com")
+
+    st1.printInfo()
+    st2.printInfo()
+    st3.printInfo()
+}
