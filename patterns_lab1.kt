@@ -44,10 +44,22 @@ class Student(
         set(value) { field = value }
         get() { return field }
         
-    var phone: String = phone
-        set(value) { field = value }
-        get() { return field }
-
+    private var _phoneNumber: String = phone   
+    
+    var phone: String
+    	get() = _phoneNumber
+    	set(value) {  
+            if (PhoneNumberValidator.isPhoneNumber(value)) {
+                _phoneNumber = value 
+                //println("Корректный номер студента $firstName: $_phoneNumber")
+            }
+            else {
+                _phoneNumber = ""
+                
+                //println("Некорректный номер студента $firstName: $value")
+            }
+        }
+        
     var telegram: String = telegram
         set(value) { field = value }
         get() { return field }
@@ -58,8 +70,8 @@ class Student(
 
     fun printInfo() {
         println("\nId: $id\n" +
-                "Фамилия: $firstName\n" +
-                "Имя: $lastName\n" + 
+                "Фамилия: $lastName\n" +
+                "Имя: $firstName\n" + 
                 "Отчество: $fatherName\n" +
                 "Телефон: $phone\n" + 
                 "Телеграм: $telegram\n" + 
@@ -67,40 +79,55 @@ class Student(
     }
 }
 
+object PhoneNumberValidator {
+        // Регулярное выражение для проверки телефонного номера
+        private var VALID_PHONE_NUMBER_REGEX = Regex("^\\+?\\d{1,3}[- ]?\\(?\\d{1,3}\\)?[- ]?\\d{3,4}[- ]?\\d{4}\$")
+        fun isPhoneNumber(phoneNumber: String): Boolean {
+            return VALID_PHONE_NUMBER_REGEX.matches(phoneNumber)
+        }    
+    }
+
 fun main() {
-    val st1 = Student(
+
+    var st1: Student = Student(
         id = 1, 
-        firstName = "Петр",
         lastName = "Петров",
-        fatherName = "Петрович",
-        phone = "+7(999kр)999-9991",
-        telegram = "@petr",
-        email = "petr.gmail.com"
+        firstName = "Петр",
+        fatherName = "Петрович"
     )
+    st1.phone = "+7(99р9)999-9991"
+    st1.telegram = "@petr"
+    st1.email = "petr.gmail.com"      
     
     val st2 = Student(
         id = 2,
-        firstName = "Семен", 
         lastName = "Семенов", 
-        fatherName = "Семенович", 
-        phone = "+7(999)999-9992", 
-        telegram = "@semen")
+        firstName = "Семен", 
+        fatherName = "Семенович"
+    )
+    st2.phone = "+7(999)999-9992"
+    st2.telegram = "@semen"
     
     val st3 = Student(
         id = 3, 
-        firstName = "Иван", 
         lastName = "Иванов", 
-        fatherName = "Иванович", 
-        phone = "+7(999)999-9993")
+        firstName = "Иван", 
+        fatherName = "Иванович"
+    )
+    st3.phone = "+7(999)999-9993"
     
     val st4 = Student(
         id = 4, 
-        firstName = "Егор", 
         lastName = "Егоров", 
+        firstName = "Егор", 
         fatherName = "Егорович")
 
     st1.printInfo()
     st2.printInfo()
     st3.printInfo()
     st4.printInfo()
+    
+   
 }
+
+
