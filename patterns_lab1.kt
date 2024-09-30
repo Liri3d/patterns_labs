@@ -6,7 +6,8 @@ class Student(
     fatherName: String,
     phone: String = "",
     telegram: String = "",
-    email: String = ""
+    email: String = "",
+    git: String = ""
 ) 
 {
     // Вторичные конструкторы
@@ -21,6 +22,8 @@ class Student(
     constructor(id: Int, lastName: String, firstName: String, fatherName: String, phone: String, telegram: String) : this(id, lastName, firstName, fatherName, phone, telegram, "") {
         // println("Создан студент с id=$id, ФИО: $lastName $firstName $fatherName, телефон: $phone, телеграм: $telegram")
     }
+    
+    
     
     init {
         //require(PhoneNumberValidator.isPhoneNumber(phone)) { "Некорректный телефон" }
@@ -78,7 +81,31 @@ class Student(
     var email: String = email
         set(value) { field = value }
         get() { return field }
+    
+    var git: String = git
+        set(value) { field = value }
+        get() { return field }
 
+        // Validate
+    fun validate(): Boolean {
+        return isGitHubUsernameValid() && isContactInfoValid()
+    }
+
+    private fun isGitHubUsernameValid(): Boolean {
+        return git?.isNotEmpty() == true
+    }
+
+    private fun isContactInfoValid(): Boolean {
+        if (phone?.isNotEmpty() == true || telegram?.isNotEmpty() == true) {
+            return true
+        }
+        else {
+            return false
+        }
+    }
+    
+    
+    
     fun printInfo() {
         println("\nId: $id\n" +
                 "Фамилия: $lastName\n" +
@@ -86,7 +113,8 @@ class Student(
                 "Отчество: $fatherName\n" +
                 "Телефон: $phone\n" + 
                 "Телеграм: $telegram\n" + 
-                "Почта: $email")
+                "Почта: $email\n" + 
+                "Гит: $git")
     }
 }
 
@@ -107,8 +135,9 @@ fun main() {
         fatherName = "Петрович"
     )
     st1.phone = "+7(99р9)999-9991"
-    st1.telegram = "@petr"
+    //st1.telegram = "@petr"
     st1.email = "petr.gmail.com"      
+    st1.git = "petr_git"
     
     val st2 = Student(
         id = 2,
@@ -134,11 +163,16 @@ fun main() {
         fatherName = "Егорович")
 
     st1.printInfo()
+    
+    if (st1.validate()) {
+        println("Профиль студента действителен")
+    } else {
+        println("Профиль студента НЕ действителен")
+    }
+    
     st2.printInfo()
     st3.printInfo()
     st4.printInfo()
     
    
 }
-
-
