@@ -23,6 +23,21 @@ class Student(
     }
     
     init {
+        //require(PhoneNumberValidator.isPhoneNumber(phone)) { "Некорректный телефон" }
+        
+        // Валидация firstName
+        require(firstName.isNotEmpty()) { "Имя не может быть пустым" }
+        require(firstName.first().isUpperCase()) { "Имя должно начинаться с заглавной буквы" }
+		require(firstName.all { it.isLetter() || it == ' ' }) { "Имя может содержать только буквы и пробелы" }
+        // Валидация lastName
+        require(lastName.isNotEmpty()) { "Фамилия не может быть пустой" }
+        require(lastName.first().isUpperCase()) { "Фамилия должна начинаться с заглавной буквы" }
+        require(lastName.all { it.isLetter() || it == ' ' }) { "Имя может содержать только буквы и пробелы" }
+        // Валидация fatherName
+        require(fatherName.isNotEmpty()) { "Отчество не может быть пустым" }
+        require(fatherName.first().isUpperCase()) { "Отчество должно начинаться с заглавной буквы" }
+        require(fatherName.all { it.isLetter() || it == ' ' }) { "Отчество может содержать только буквы и пробелы" }
+        
         require(lastName.isNotBlank()) { "Фамилия не должна быть пустой" }
         require(firstName.isNotBlank()) { "Имя не должно быть пустым" }
         require(fatherName.isNotBlank()) { "Отчество не должно быть пустым" }
@@ -45,18 +60,14 @@ class Student(
         get() { return field }
         
     private var _phoneNumber: String = phone   
-    
     var phone: String
     	get() = _phoneNumber
     	set(value) {  
             if (PhoneNumberValidator.isPhoneNumber(value)) {
                 _phoneNumber = value 
-                //println("Корректный номер студента $firstName: $_phoneNumber")
             }
             else {
                 _phoneNumber = ""
-                
-                //println("Некорректный номер студента $firstName: $value")
             }
         }
         
