@@ -70,7 +70,8 @@ class Student(
                 _phoneNumber = value 
             }
             else {
-                _phoneNumber = ""
+                _phoneNumber = "НОМЕР НЕКОРРЕКТЕН"
+                
             }
         }
         
@@ -91,11 +92,11 @@ class Student(
         return isGitHubUsernameValid() && isContactInfoValid()
     }
 
-    private fun isGitHubUsernameValid(): Boolean {
+    fun isGitHubUsernameValid(): Boolean {
         return git?.isNotEmpty() == true
     }
 
-    private fun isContactInfoValid(): Boolean {
+    fun isContactInfoValid(): Boolean {
         if (phone?.isNotEmpty() == true || telegram?.isNotEmpty() == true) {
             return true
         }
@@ -103,9 +104,7 @@ class Student(
             return false
         }
     }
-    
-    
-    
+ 
     fun printInfo() {
         println("\nId: $id\n" +
                 "Фамилия: $lastName\n" +
@@ -118,6 +117,7 @@ class Student(
     }
 }
 
+// 6 Задание
 object PhoneNumberValidator {
         // Регулярное выражение для проверки телефонного номера
         private var VALID_PHONE_NUMBER_REGEX = Regex("^\\+?\\d{1,3}[- ]?\\(?\\d{1,3}\\)?[- ]?\\d{3,4}[- ]?\\d{4}\$")
@@ -126,15 +126,26 @@ object PhoneNumberValidator {
         }    
     }
 
+// 9 Задание
+object FindByNumber {
+        fun studentByPhone(phoneNumber: String, students: List<Student>): Student? {
+            println("\nСтудент с номером $phoneNumber")
+            val studentWithPhone = students.find { it.phone == phoneNumber }
+            studentWithPhone?.printInfo()
+            return studentWithPhone
+        }
+    }
+
 fun main() {
 
+    // 7 Задание: Валидация ФИО
     var st1: Student = Student(
         id = 1, 
         lastName = "Петров",
         firstName = "Петр",
         fatherName = "Петрович"
     )
-    st1.phone = "+7(99р9)999-9991"
+    //st1.phone = "+7(99р9)999-9991"
     //st1.telegram = "@petr"
     st1.email = "petr.gmail.com"      
     st1.git = "petr_git"
@@ -161,9 +172,10 @@ fun main() {
         lastName = "Егоров", 
         firstName = "Егор", 
         fatherName = "Егорович")
-
+    
     st1.printInfo()
     
+    // 8 Задание: Проверка наличия гита и любого контакта
     if (st1.validate()) {
         println("Профиль студента действителен")
     } else {
@@ -173,6 +185,11 @@ fun main() {
     st2.printInfo()
     st3.printInfo()
     st4.printInfo()
+    println()
+    println("------------------------------")
     
-   
+    // 9 Задание: поля объекта по номеру телефона
+    val students = listOf(st1, st2, st3, st4)
+    val phoneNumber = "+7(999)999-9993"
+    FindByNumber.studentByPhone(phoneNumber, students)
 }
