@@ -34,6 +34,20 @@ fun main() {
     val validString = MyClass("42,hello,3.14")
     println(validString) // Вывод: MyClass(field1=42, field2=hello, field3=3.14)
 
+    // Пример с невалидной строкой 1
+    try {
+        val invalidString1 = MyClass("42,hello")
+    } catch (e: IllegalArgumentException) {
+        println(e.message) // Вывод ошибки
+    }
+
+    // Пример с невалидной строкой 2
+    try {
+        val invalidString2 = MyClass("42,hello,abc")
+    } catch (e: IllegalArgumentException) {
+        println(e.message) // Вывод ошибки
+    }
+
     // Пример с валидной строкой 2
     val validString2 = MyClass("123,string,45.05")
     println(validString2) // Вывод: MyClass(field1=123, field2=string, field3=45.05)
