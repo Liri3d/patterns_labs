@@ -1,54 +1,67 @@
-data class MyClass(
-    val field1: Int,
-    val field2: String,
-    val field3: Double
+data class Student(
+    val lastName: String,
+    val firstName: String,
+    val middleName: String,
+    val gitLink: String,
+    val contactMethod: String,
+    val contactValue: String
 ) {
     companion object {
-        private const val DELIMITER = ","
+        private const val DELIMITER = ";"
 
-        // Функция создания объекта MyClass из строки
-        fun fromString(str: String): MyClass {
+        // Метод для создания объекта Student из строки
+        fun fromString(str: String): Student {
             val parts = str.split(DELIMITER)
-            if (parts.size != 3) {
+            if (parts.size != 6) {
                 throw IllegalArgumentException("Неверная входная строка: $str")
             }
 
-            val field1 = parts[0].toIntOrNull() ?: throw IllegalArgumentException("Неверное значение field1: ${parts[0]}")
-            val field2 = parts[1]
-            val field3 = parts[2].toDoubleOrNull() ?: throw IllegalArgumentException("Неверное значение field3: ${parts[2]}")
-            
-            return MyClass(field1, field2, field3)
+            val lastName = parts[0]
+            val firstName = parts[1]
+            val middleName = parts[2]
+            val gitLink = parts[3]
+            val contactMethod = parts[4]
+            val contactValue = parts[5]
+
+            return Student(lastName, firstName, middleName, gitLink, contactMethod, contactValue)
         }
     }
-    
-    // Новый конструктор, принимающий строку
-    constructor(str: String) : this(fromString(str).field1, fromString(str).field2, fromString(str).field3)
 
-    override fun toString(): String {
-        return "$field1,$field2,$field3"
+    // Метод для получения информации о студенте
+    fun getInfo(): String {
+        return "${getFullName()}\n" +
+               "${getGitInfo()}\n" +
+               "${getContactInfo()}\n"
+    }
+
+    // Метод для получения фамилии и инициалов
+    private fun getFullName(): String {
+        return "$lastName ${firstName.first()}.${middleName.first()}."
+    }
+
+    // Метод для получения информации о гите
+    private fun getGitInfo(): String {
+        return "Git: $gitLink"
+    }
+
+    // Метод для получения контактной информации
+    private fun getContactInfo(): String {
+        return "Контакт: $contactMethod: $contactValue"
     }
 }
 
 fun main() {
-    // Пример с валидной строкой с использованием нового конструктора
-    val validString = MyClass("42,hello,3.14")
-    println(validString) // Вывод: MyClass(field1=42, field2=hello, field3=3.14)
+    // Пример с валидной строкой
+    val studentString = "Иванов;Иван;Иванович;https://github.com/ivanov;Email;ivanov@example.com"
+    val student = Student.fromString(studentString)
 
-    // Пример с невалидной строкой 1
+    println(student.getInfo()) // Вывод: Иванов И.И. | Git: https://github.com/ivanov | Контакт: Email: ivanov@example.com
+
+    // Обработка ошибок
     try {
-        val invalidString1 = MyClass("42,hello")
+        val invalidStudentString = "Иванов;Иван;Иванович;https://github.com/ivanov" // недостающие данные
+        val invalidStudent = Student.fromString(invalidStudentString)
     } catch (e: IllegalArgumentException) {
         println(e.message) // Вывод ошибки
     }
-
-    // Пример с невалидной строкой 2
-    try {
-        val invalidString2 = MyClass("42,hello,abc")
-    } catch (e: IllegalArgumentException) {
-        println(e.message) // Вывод ошибки
-    }
-
-    // Пример с валидной строкой 2
-    val validString2 = MyClass("123,string,45.05")
-    println(validString2) // Вывод: MyClass(field1=123, field2=string, field3=45.05)
 }
