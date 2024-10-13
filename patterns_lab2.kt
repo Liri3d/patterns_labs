@@ -1,3 +1,6 @@
+import java.io.File
+import java.io.FileNotFoundException
+
 // Суперкласс
 open class BaseStudent(
     open val lastName: String,
@@ -26,7 +29,9 @@ open class BaseStudent(
 
     // Метод для получения полной информации
     open fun getInfo(): String {
-        return "${getFullName()} | ${getGitInfo()} | ${getContactInfo()}"
+        return "${getFullName()}\n" +
+               "${getGitInfo()}\n" +
+               "${getContactInfo()}"
     }
 }
 
@@ -57,6 +62,31 @@ data class Student(
                 contactValue = parts[5]
             )
         }
+
+        // Метод для чтения студентов из текстового файла
+        fun readFromTxt(filePath: String): Array<Student> {
+            // Проверка корректности пути
+            val file = File(filePath)
+            if (!file.exists() || !file.isFile) {
+                throw IllegalArgumentException("Некорректный адрес файла: $filePath")
+            }
+
+            val students = mutableListOf<Student>()
+
+            try {
+                file.forEachLine { line ->
+                    // Создаем объект Student из строки
+                    val student = fromString(line) // Используем метод fromString
+                    students.add(student) // Добавляем студента в список
+                }
+            } catch (e: FileNotFoundException) {
+                throw IllegalArgumentException("Файл не найден: $filePath")
+            } catch (e: IllegalArgumentException) {
+                throw IllegalArgumentException("Ошибка в данных: ${e.message}")
+            }
+
+            return students.toTypedArray() // Возвращаем массив
+        }
     }
 }
 
@@ -86,16 +116,18 @@ class Student_short(
         id = id,
         lastName = info.substringBefore(";"),
         firstName = info.substringAfter(";").substringBefore(";"),
-        middleName = "", // Поскольку в строке нет отчества, оставляем пустым
-        gitLink = info.substringAfter(";").substringAfter(";").substringBefore(";"),
+        middleName = info.substringAfter(";").substringAfter(";").substringBefore(";"),
+        gitLink = info.substringAfter(";").substringAfter(";").substringAfter(";").substringBefore(";"),
         contactMethod = "",
-        contactValue = info.substringAfter(";").substringAfter(";")
+        contactValue = info.substringAfter(";").substringAfter(";").substringAfter(";").substringAfter(";")
     )
 
+
+
     override fun getInfo(): String {
-        return ("ID: $id\n" +
+        return (//"ID: $id\n" +
                 "ФИО: ${getFullName()}\n" +
-                "${getGitInfo()}\n" +
+                "Гит: ${getGitInfo()}\n" +
                 "${getContactInfo()}\n")
     }
 }
@@ -118,6 +150,19 @@ fun main() {
     println(studentShortFromStudent.getInfo())
 
     // Создание объекта Student_short из ID и строки
-    val studentShortFromString = Student_short(1, "Петров П.П.;https://github.com/petrov;Телефон: 123-456-7890")
+    val studentShortFromString = Student_short(1, "Петров;Петр;Петрович;https://github.com/petrov;Телефон: 123-456-7890")
     println(studentShortFromString.getInfo())
+
+    val filePath = "C:/Users/User/Documents/Patterns_labs/students.txt" // Укажите путь к вашему текстовому файлу
+    try {
+        val students = Student.readFromTxt(filePath) // Чтение студентов из файла
+
+        // Создание объектов Student_short из объектов Student
+        students.forEachIndexed { index, student ->
+            val studentShort = Student_short(student) // Используем объект Student
+            println(studentShort.getInfo())
+        }
+    } catch (e: IllegalArgumentException) {
+        println(e.message)
+    }
 }
