@@ -153,6 +153,7 @@ fun main() {
     val studentShortFromString = Student_short(1, "Петров;Петр;Петрович;https://github.com/petrov;Телефон: 123-456-7890")
     println(studentShortFromString.getInfo())
 
+    // Тестирование метода
     val filePath = "C:/Users/User/Documents/Patterns_labs/students.txt" // Укажите путь к вашему текстовому файлу
     try {
         val students = Student.readFromTxt(filePath) // Чтение студентов из файла
