@@ -1,8 +1,3 @@
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileWriter
-import java.io.IOException
-
 fun main() {
     val studentsArray = mutableListOf<Student>()
 
@@ -30,7 +25,7 @@ fun main() {
     println(studentShortFromString.getInfo())
 
     println("---Чтение из файла----------")
-    val filePath = "C:/Users/User/Documents/Patterns_labs/students.txt" // Укажите путь к вашему текстовому файлу
+    val filePath = "C:/Users/User/Documents/patterns_labs/patterns_labs/students.txt" // Укажите путь к вашему текстовому файлу
     try {
         val students = Student.readFromTxt(filePath) // Чтение студентов из файла
 
@@ -50,6 +45,6 @@ fun main() {
     }
 
     // Запись массива студентов в файл
-    val filePath_output = "C:/Users/User/Documents/Patterns_labs/students_output.txt"
+    val filePath_output = "C:/Users/User/Documents/patterns_labs/patterns_labs/students_output.txt"
     Student.write_to_txt(filePath_output, studentsArray)
 }
