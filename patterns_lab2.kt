@@ -1,11 +1,43 @@
-data class Student(
-    val lastName: String,
-    val firstName: String,
-    val middleName: String,
-    val gitLink: String,
-    val contactMethod: String,
-    val contactValue: String
+// Суперкласс
+open class BaseStudent(
+    open val lastName: String,
+    open val firstName: String,
+    open val middleName: String,
+    open val gitLink: String,
+    open val contactMethod: String,
+    open val contactValue: String
 ) {
+    // Метод для получения фамилии и инициалов
+    fun getFullName(): String {
+        val initials = if (firstName.isNotEmpty()) "${firstName.first()}." else "."
+        val middleInitials = if (middleName.isNotEmpty()) "${middleName.first()}." else "."
+        return "$lastName $initials$middleInitials"
+    }
+
+    // Метод для получения информации о гите
+    fun getGitInfo(): String {
+        return "Git: $gitLink"
+    }
+
+    // Метод для получения контактной информации
+    fun getContactInfo(): String {
+        return "Контакт $contactMethod: $contactValue"
+    }
+
+    // Метод для получения полной информации
+    open fun getInfo(): String {
+        return "${getFullName()} | ${getGitInfo()} | ${getContactInfo()}"
+    }
+}
+
+data class Student(
+    override val lastName: String,
+    override val firstName: String,
+    override val middleName: String,
+    override val gitLink: String,
+    override val contactMethod: String,
+    override val contactValue: String
+) : BaseStudent(lastName, firstName, middleName, gitLink, contactMethod, contactValue) {
     companion object {
         private const val DELIMITER = ";"
 
@@ -16,67 +48,57 @@ data class Student(
                 throw IllegalArgumentException("Неверная входная строка: $str")
             }
 
-            val lastName = parts[0]
-            val firstName = parts[1]
-            val middleName = parts[2]
-            val gitLink = parts[3]
-            val contactMethod = parts[4]
-            val contactValue = parts[5]
-
-            return Student(lastName, firstName, middleName, gitLink, contactMethod, contactValue)
+            return Student(
+                lastName = parts[0],
+                firstName = parts[1],
+                middleName = parts[2],
+                gitLink = parts[3],
+                contactMethod = parts[4],
+                contactValue = parts[5]
+            )
         }
-    }
-
-    // Метод для получения информации о студенте
-    fun getInfo(): String {
-        return "${getFullName()}\n" +
-                "${getGitInfo()}\n" +
-                "${getContactInfo()}\n"
-    }
-
-    // Метод для получения фамилии и инициалов
-    private fun getFullName(): String {
-        return "$lastName ${firstName.first()}.${middleName.first()}."
-    }
-
-    // Метод для получения информации о гите
-    private fun getGitInfo(): String {
-        return "Git: $gitLink"
-    }
-
-    // Метод для получения контактной информации
-    private fun getContactInfo(): String {
-        return "Контакт: $contactMethod: $contactValue"
     }
 }
 
-
-
 class Student_short(
     val id: Int,
-    val fullName: String,
-    val git: String,
-    val contact: String
-) {
+    lastName: String,
+    firstName: String,
+    middleName: String,
+    gitLink: String,
+    contactMethod: String,
+    contactValue: String
+) : BaseStudent(lastName, firstName, middleName, gitLink, contactMethod, contactValue) {
+
     // Конструктор, принимающий объект Student
     constructor(student: Student) : this(
-        id = 0, // Можно указать 0 или любое другое значение при необходимости
-        fullName = "${student.lastName} ${student.firstName.first()}.${student.middleName.first()}.",
-        git = student.gitLink,
-        contact = "${student.contactMethod}: ${student.contactValue}"
+        id = 0, // Задаём ID по умолчанию
+        lastName = student.lastName,
+        firstName = student.firstName,
+        middleName = student.middleName,
+        gitLink = student.gitLink,
+        contactMethod = student.contactMethod,
+        contactValue = student.contactValue
     )
 
     // Конструктор, принимающий ID и строку
     constructor(id: Int, info: String) : this(
         id = id,
-        fullName = info.substringBefore(";"),
-        git = info.substringAfter(";").substringBefore(";"),
-        contact = info.substringAfter(";").substringAfter(";")
+        lastName = info.substringBefore(";"),
+        firstName = info.substringAfter(";").substringBefore(";"),
+        middleName = "", // Поскольку в строке нет отчества, оставляем пустым
+        gitLink = info.substringAfter(";").substringAfter(";").substringBefore(";"),
+        contactMethod = "",
+        contactValue = info.substringAfter(";").substringAfter(";")
     )
+
+    override fun getInfo(): String {
+        return ("ID: $id\n" +
+                "ФИО: ${getFullName()}\n" +
+                "${getGitInfo()}\n" +
+                "${getContactInfo()}\n")
+    }
 }
-
-
-
 
 fun main() {
     // Пример использования класса Student
@@ -88,14 +110,14 @@ fun main() {
         val invalidStudentString = "Иванов;Иван;Иванович;https://github.com/ivanov" // недостающие данные
         val invalidStudent = Student.fromString(invalidStudentString)
     } catch (e: IllegalArgumentException) {
-        println(e.message) // Вывод ошибки
+        println(e.message + "\n") // Вывод ошибки
     }
-    
+
     // Создание объекта Student_short из объекта Student
     val studentShortFromStudent = Student_short(student)
-    println("ID: ${studentShortFromStudent.id}, ФИО: ${studentShortFromStudent.fullName}, Git: ${studentShortFromStudent.git}, Контакт: ${studentShortFromStudent.contact}")
+    println(studentShortFromStudent.getInfo())
 
     // Создание объекта Student_short из ID и строки
     val studentShortFromString = Student_short(1, "Петров П.П.;https://github.com/petrov;Телефон: 123-456-7890")
-    println("ID: ${studentShortFromString.id}, ФИО: ${studentShortFromString.fullName}, Git: ${studentShortFromString.git}, Контакт: ${studentShortFromString.contact}")
+    println(studentShortFromString.getInfo())
 }
