@@ -1,5 +1,7 @@
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.FileWriter
+import java.io.IOException
 
 // Суперкласс
 open class BaseStudent(
@@ -87,6 +89,21 @@ data class Student(
 
             return students.toTypedArray() // Возвращаем массив
         }
+
+        fun write_to_txt(filePath: String, students: List<Student>) {
+            try {
+                val fileWriter = FileWriter(filePath)
+                students.forEach { student ->
+                    val line = "${student.lastName};${student.firstName};${student.middleName};${student.gitLink};${student.contactMethod};${student.contactValue}"
+                    fileWriter.write(line + "\n")
+                }
+                fileWriter.close()
+            } catch (e: IOException) {
+                throw IllegalArgumentException("Error writing to file: $filePath")
+            }
+        }
+
+
     }
 }
 
@@ -133,27 +150,32 @@ class Student_short(
 }
 
 fun main() {
+    val studentsArray = mutableListOf<Student>()
+
     // Пример использования класса Student
     val studentString = "Иванов;Иван;Иванович;https://github.com/ivanov;Email;ivanov@example.com"
     val student = Student.fromString(studentString)
+    studentsArray.add(student)
+    println("---Создание объекта Student----------")
+    println(student.getInfo())
 
     // Обработка ошибок
     try {
         val invalidStudentString = "Иванов;Иван;Иванович;https://github.com/ivanov" // недостающие данные
         val invalidStudent = Student.fromString(invalidStudentString)
     } catch (e: IllegalArgumentException) {
-        println(e.message + "\n") // Вывод ошибки
+        println("\n" + e.message + "\n") // Вывод ошибки
     }
 
-    // Создание объекта Student_short из объекта Student
+    println("---Создание объекта Student_short из объекта Student----------")
     val studentShortFromStudent = Student_short(student)
     println(studentShortFromStudent.getInfo())
 
-    // Создание объекта Student_short из ID и строки
+    println("---Создание объекта Student_short из ID и строки----------")
     val studentShortFromString = Student_short(1, "Петров;Петр;Петрович;https://github.com/petrov;Телефон: 123-456-7890")
     println(studentShortFromString.getInfo())
 
-    // Тестирование метода
+    println("---Чтение из файла----------")
     val filePath = "C:/Users/User/Documents/Patterns_labs/students.txt" // Укажите путь к вашему текстовому файлу
     try {
         val students = Student.readFromTxt(filePath) // Чтение студентов из файла
@@ -161,6 +183,7 @@ fun main() {
         // Создание объектов Student_short из объектов Student
         students.forEachIndexed { index, student ->
             val studentShort = Student_short(student) // Используем объект Student
+            studentsArray.add(student)
             println(studentShort.getInfo())
         }
     } catch (e: IllegalArgumentException) {
