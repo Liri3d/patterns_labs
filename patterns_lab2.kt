@@ -189,4 +189,13 @@ fun main() {
     } catch (e: IllegalArgumentException) {
         println(e.message)
     }
+    
+    println("----------------------------")
+    for (student in studentsArray) {
+        println(student.getInfo() + "\n")
+    }
+
+    // Запись массива студентов в файл
+    val filePath_output = "C:/Users/User/Documents/Patterns_labs/students_output.txt"
+    Student.write_to_txt(filePath_output, studentsArray)
 }
