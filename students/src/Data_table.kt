@@ -7,7 +7,12 @@ class DataTable(dataString: String) {
         .toTypedArray()
 
     // Метод для получения элемента по индексам
+    // Возвращает элемент по указанным индексам
     operator fun get(row: Int, col: Int): String {
+        // Проверка на выход индексов за пределы массива
+        if (row < 0 || row >= getRowCount() || col < 0 || col >= getColumnCount()) {
+            throw IndexOutOfBoundsException("Индексы выходят за пределы массива")
+        }
         return data[row][col]
     }
 
