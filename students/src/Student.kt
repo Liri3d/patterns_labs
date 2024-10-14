@@ -68,7 +68,6 @@ data class Student(
                 throw IllegalArgumentException("Error writing to file: $filePath")
             }
         }
-
-
     }
+
 }
