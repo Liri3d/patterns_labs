@@ -77,10 +77,10 @@ fun StudentsGo() {
         git = "ivanov-vas-git"
     )
 
-    Student.write_to_txt("src/files", "students.txt", listOf(student1, studentForShort, studentFromString))
-    val students = Student.read_from_txt("src/files/students.txt")
-    println("Студенты из файла:")
-    students.forEach { println(it.getInfo()) }
+//    Student.write_to_txt("src/files", "students.txt", listOf(student1, studentForShort, studentFromString))
+//    val students = Student.read_from_txt("src/files/students.txt")
+//    println("Студенты из файла:")
+//    students.forEach { println(it.getInfo()) }
 }
 
 
