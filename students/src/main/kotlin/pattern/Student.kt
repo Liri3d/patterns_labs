@@ -1,16 +1,16 @@
 package main.kotlin.pattern
 
-import java.io.File
-import java.io.FileNotFoundException
+import kotlinx.serialization.*
 
+@Serializable
 class Student(
-    override var id: Int = 0,
+    var id: Int = 0,
     var lastName: String,
     var firstName: String,
     var middleName: String,
     var telegram: String? = null,
-    override var git: String? = null
-): StudentBase(id, git) {
+    var git: String? = null
+): StudentBase() {
     var phone: String? = null
         get() {
             return field
@@ -147,6 +147,6 @@ class Student(
 
     override fun getLastNameWithInitials(): String = "$lastName ${firstName.first()}. ${middleName.first()}."
 
-
+    override fun getGitInfo(): String? = git
 
 }

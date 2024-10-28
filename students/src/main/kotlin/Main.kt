@@ -1,12 +1,16 @@
 package main.kotlin
 
+import com.google.gson.Gson
+import kotlinx.serialization.json.Json
 import main.kotlin.pattern.Student
 import main.kotlin.pattern.Student_short
+import main.kotlin.strat.Student_list_json
+import main.kotlin.strat.Student_list_txt
 import main.kotlin.pattern.Data_list_student_short
 
 
 fun main() {
-    DataTableGo();
+    //DataTableGo();
     StudentsGo();
 }
 
@@ -41,54 +45,123 @@ fun DataTableGo() {
 }
 
 fun StudentsGo() {
-    val student1 = Student(
-        1,
-        "Иванов",
-        "Иван",
-        "Иванович",
-        email = "ivan.ivan@example.com",
-        git = "ivan"
-    )
+    val inputFilePath = "src/files/students.txt"
+    val studentList = Student_list_txt(inputFilePath)
+    println("Студенты прочитаны из файла " + inputFilePath)
+    studentList.get_student_short_count()
 
-    // Создаем Map с данными студента
-    val student2 = Student(mapOf(
-        "id" to 1,
-        "lastName" to "Иванов",
-        "firstName" to "Иван",
-        "middleName" to "Иванович",
-        "phone" to "+1 (234) 567890",
-        "telegram" to "@ivanov",
-        "email" to "ivan@example.com",
-        "git" to "github.com/ivanov"
-    )
-    )
-    println(student2.getInfo())
+    // Добавить нового студента
+    val newStudent = Student(id=4, firstName="Игнат", lastName="Прохоров", middleName="Рустамович", phone="+7 (374) 934-93-56", telegram="@rustam", email=null, git="rustam-vas-git")
+    studentList.add(newStudent)
+    println("Добавлен новый студент: $newStudent")
+
+    // Сортировка студентов по фамилии
+    studentList.orderStudentsByLastNameInitials()
+    println("Список студентов отсортирован по фамилии:")
+    studentList.getStudents().forEach { println(it) }
+
+    // Поиск студента по ID
+    val searchId = 1 // Замените на реальный ID
+    try {
+        val foundStudent = studentList.findById(searchId)
+        println("Найден студент: $foundStudent")
+    } catch (e: NoSuchElementException) {
+        println("Студент с ID $searchId не найден.")
+    }
+
+    // Удаление студента по ID
+    val removeId = 2 // Замените на реальный ID
+    studentList.removeById(removeId)
+    println("Студент с ID $removeId удален.")
+
+    // Получить k элементов, начиная с n
+    val n = 1 // Начальный индекс
+    val k = 2 // Количество студентов для получения
+    val shortList = studentList.get_k_n_student_short_list(n, k)
+
+    println("k = $k студентов, начиная с n = $n:")
+    shortList.getItems().forEach { studentShort ->
+        println(studentShort)
+    }
+
+    // Записываем студентов в файл
+    val outputDirectory = "src/files"
+    val outputFileName = "output_students.txt"
+    studentList.write_to_file(outputDirectory, outputFileName)
+    println("Данные студентов записаны в $outputDirectory/$outputFileName")
 
 
-    val studentFromString = Student("Student(id=2, firstName=Петр, lastName=Иванов, middleName=Иванович, phone=+7 (123) 456-78-90, telegram=null, email=ivan@example.com, git=ivan_ggit)");
-    println(studentFromString.getInfo())
 
-    val studentForShort = Student(
-        id = 3,
-        lastName = "Иванов",
-        firstName = "Василий",
-        middleName = "Иванович",
-        telegram = "@valis",
-        git = "ivanov-vas-git"
-    )
 
-//    Student.write_to_txt("src/files", "students.txt", listOf(student1, studentForShort, studentFromString))
-//    val students = Student.read_from_txt("src/files/students.txt")
-//    println("Студенты из файла:")
-//    students.forEach { println(it.getInfo()) }
+
+
+
+
+
+
+
+
+    val filePathJson = "src/files/students.json"
+    val studentListJson = Student_list_json(filePathJson)
+    println("\n\n\nСтуденты прочитаны из файла " + filePathJson)
+
+    // 1. Поиск студента по ID
+    val studentIdToFind = 1
+    try {
+        val foundStudent = studentListJson.findById(studentIdToFind)
+        println("Найден студент: $foundStudent")
+    } catch (e: Exception) {
+        println(e.message)
+    }
+
+    // 2. Получение короткого списка студентов
+    val n1 = 0     // Начальный индекс
+    val k1 = 5    // Количество студентов для получения
+    val shortListJson = studentListJson.get_k_n_student_short_list(n, k)
+    println("Список студентов (по $n1 -му индексу, $k1 студентов): $shortListJson")
+
+    // 3. Сортировка студентов по фамилии и инициалам
+    studentListJson.orderStudentsByLastNameInitials()
+    println("Студенты отсортированы по фамилии и инициалам.")
+
+    // 4. Добавление нового студента
+    val newStudentJson = Student(id=4, firstName="Игнат", lastName="Прохоров", middleName="Рустамович", phone="+7 (374) 934-93-56", telegram="@rustam", email=null, git="rustam-vas-git")
+    studentListJson.add(newStudent)
+    println("Добавлен новый студент: $newStudent")
+
+    // 5. Замена студента по ID
+    val studentToReplace = Student(id=4, firstName="Игнат", lastName="Прохоров", middleName="Рустамович", phone="+7 (374) 934-93-56", telegram="@rustam", email=null, git="rustam-vas-git")
+    try {
+        studentListJson.replaceById(studentToReplace, studentIdToFind)
+        println("Студент с ID $studentIdToFind заменен.")
+    } catch (e: Exception) {
+        println(e.message)
+    }
+
+    // 6. Удаление студента по ID
+    try {
+        studentListJson.removeById(studentIdToFind)
+        println("Студент с ID $studentIdToFind удален.")
+    } catch (e: Exception) {
+        println(e.message)
+    }
+
+    // 7. Получение количества студентов
+    val count = studentListJson.get_student_short_count()
+    println("Количество студентов в списке: $count")
+
+
+    val directory = "src/files"
+    val fileName = "output_students.json"
+    studentListJson.write_to_file(directory, fileName)
+    println("Список студентов успешно записан в файл $fileName.")
 }
 
-
-fun isValidStudent(student: Student) {
+fun checkValidStudent(student: Student) {
     val studentName = student.lastName
     if (student.validate()) {
-        println("Даннные студента $studentName корректны и полны");
+        println("Student $studentName is valid");
     } else {
-        println("Даннные студента $studentName некорректные либо неполные");
+        println("Student $studentName is not valid");
     }
 }

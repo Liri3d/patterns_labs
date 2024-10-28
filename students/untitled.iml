@@ -11,5 +11,22 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://E:/libjava/kotlinx-serialization-json-1.5.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="jetbrains.kotlinx.serialization.core.jvm" level="project" />
+    <orderEntry type="library" name="jetbrains.kotlinx.serialization.json.jvm" level="project" />
+    <orderEntry type="library" name="fasterxml.jackson.dataformat.avro" level="project" />
+    <orderEntry type="library" name="fasterxml.jackson.module.kotlin" level="project" />
+    <orderEntry type="library" name="fasterxml.jackson.dataformat.yaml" level="project" />
+    <orderEntry type="library" name="jetbrains.kotlinx.serialization.json.jvm1" level="project" />
+    <orderEntry type="library" name="jetbrains.kotlin.serialization" level="project" />
+    <orderEntry type="library" name="google.code.gson" level="project" />
   </component>
 </module>

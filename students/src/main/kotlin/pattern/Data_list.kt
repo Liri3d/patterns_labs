@@ -12,6 +12,10 @@ abstract class Data_list<T : Comparable<T>>(protected val elements: List<T>) {
         return elements[index]
     }
 
+    fun getItems(): List<T> {
+        return elements
+    }
+
     fun getSize(): Int = elements.size
 
     fun toList(): List<T> = elements.toList()
@@ -38,4 +42,6 @@ abstract class Data_list<T : Comparable<T>>(protected val elements: List<T>) {
     }
 
     protected fun generateOrderNumbers(): List<Int> = elements.indices.toList()
+
+    override fun toString(): String = elements.toString()
 }

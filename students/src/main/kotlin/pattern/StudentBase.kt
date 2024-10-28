@@ -1,12 +1,13 @@
 package main.kotlin.pattern
+import kotlinx.serialization.Serializable
 
-abstract class StudentBase(
-    open val id: Int,
-    open var git: String? = null
-) {
+@Serializable
+abstract class StudentBase() {
 
     // Получить контакты
     abstract fun getContactInfo(): String
+
+    abstract fun getGitInfo(): String?
 
     // Получить фамилию и инициалы
     abstract fun getLastNameWithInitials(): String
@@ -15,6 +16,7 @@ abstract class StudentBase(
     fun getInfo(): String {
         val lastNameWithInitials = getLastNameWithInitials()
         val contactInfo = getContactInfo()
+        val git = getGitInfo()
         return "$lastNameWithInitials; $git; $contactInfo"
     }
 }

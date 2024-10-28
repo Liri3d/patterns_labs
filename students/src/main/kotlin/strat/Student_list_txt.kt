@@ -6,7 +6,6 @@ import main.kotlin.pattern.Student
 import main.kotlin.pattern.Student_short
 import java.io.File
 import java.io.FileNotFoundException
-import java.util.function.Predicate
 
 // Работа с коллекцией об-ов Student и получ их из файла
 class Student_list_txt(private var students: MutableList<Student>) {
@@ -77,12 +76,12 @@ class Student_list_txt(private var students: MutableList<Student>) {
 
     // Сортировка списка по фамилии
     fun orderStudentsByLastNameInitials() {
-        orderStudents(compareBy { it.getLastNameWithInitials() })
+        orderStudents(compareBy { it.getLastNameWithInitials() }) // Вызов orderStudents для сортировки
     }
 
     // Сортировка
     fun orderStudents(comparator: Comparator<Student>) {
-        students.sortedWith(comparator)
+        students.sortWith(comparator) // Сортировка на месте
     }
 
     // Добавить объект
@@ -102,6 +101,10 @@ class Student_list_txt(private var students: MutableList<Student>) {
     // Удаление по id
     fun removeById(id: Int) {
         students.removeIf { it.id == id }
+    }
+
+    fun getStudents(): List<Student> {
+        return students.toList() // Возвращаем копию списка студентов
     }
 
     // Получение количества объектов в списке

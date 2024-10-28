@@ -1,0 +1,6 @@
+[
+  {"id": 1, "firstName": "Иван", "lastName": "Иванов", "middleName": "Иванович"},
+  {"id": 2, "firstName": "Петр", "lastName": "Петров", "middleName": "Петрович", "email": "petr@example.com", "git":  "petrgitt"},
+  {"id": 3, "firstName": "Игорь", "lastName": "Ласточкин", "middleName": "Игоревич", "email": "igor@example.com", "git":  "igrgitt"},
+  {"id": 4, "firstName": "Вамид", "lastName": "Русый", "middleName": "Анатольевич", "email": "vamid@example.com", "git":  "vimidgitt"}
+]

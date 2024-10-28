@@ -1,11 +1,13 @@
 package main.kotlin.pattern
+import kotlinx.serialization.Serializable
 
+@Serializable
 class Student_short(
-    override val id: Int,
+    val id: Int,
     val lastNameInitials: String,
-    override var git: String? = null,
+    var git: String? = null,
     val contact: String? = null
-): StudentBase(id, git), Comparable<Student_short> {
+): StudentBase(), Comparable<Student_short> {
     // Конструктор для объекта
     constructor(student: Student) : this(
         id = student.id,
@@ -23,6 +25,10 @@ class Student_short(
     override fun getContactInfo(): String = this.contact ?: "Нет контактов"
 
     override fun getLastNameWithInitials(): String = this.lastNameInitials
+
+    override fun toString(): String = getInfo()
+
+    override fun getGitInfo(): String? = git
 
     override fun compareTo(other: Student_short): Int {
         return if (this.lastNameInitials > other.lastNameInitials) {
