@@ -28,5 +28,7 @@
     <orderEntry type="library" name="jetbrains.kotlinx.serialization.json.jvm1" level="project" />
     <orderEntry type="library" name="jetbrains.kotlin.serialization" level="project" />
     <orderEntry type="library" name="google.code.gson" level="project" />
+    <orderEntry type="library" name="charleskorn.kaml" level="project" />
+    <orderEntry type="library" name="charleskorn.kaml1" level="project" />
   </component>
 </module>

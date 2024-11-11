@@ -7,7 +7,7 @@ import main.kotlin.pattern.Student_short
 import main.kotlin.strat.Student_list_json
 import main.kotlin.strat.Student_list_txt
 import main.kotlin.pattern.Data_list_student_short
-
+import main.kotlin.strat.Student_list_yaml
 
 fun main() {
     //DataTableGo();
@@ -50,52 +50,9 @@ fun StudentsGo() {
     println("Студенты прочитаны из файла " + inputFilePath)
     studentList.get_student_short_count()
 
-    // Добавить нового студента
-    val newStudent = Student(id=4, firstName="Игнат", lastName="Прохоров", middleName="Рустамович", phone="+7 (374) 934-93-56", telegram="@rustam", email=null, git="rustam-vas-git")
-    studentList.add(newStudent)
-    println("Добавлен новый студент: $newStudent")
-
-    // Сортировка студентов по фамилии
-    studentList.orderStudentsByLastNameInitials()
-    println("Список студентов отсортирован по фамилии:")
-    studentList.getStudents().forEach { println(it) }
-
-    // Поиск студента по ID
-    val searchId = 1 // Замените на реальный ID
-    try {
-        val foundStudent = studentList.findById(searchId)
-        println("Найден студент: $foundStudent")
-    } catch (e: NoSuchElementException) {
-        println("Студент с ID $searchId не найден.")
-    }
-
-    // Удаление студента по ID
-    val removeId = 2 // Замените на реальный ID
-    studentList.removeById(removeId)
-    println("Студент с ID $removeId удален.")
-
-    // Получить k элементов, начиная с n
-    val n = 1 // Начальный индекс
-    val k = 2 // Количество студентов для получения
-    val shortList = studentList.get_k_n_student_short_list(n, k)
-
-    println("k = $k студентов, начиная с n = $n:")
-    shortList.getItems().forEach { studentShort ->
-        println(studentShort)
-    }
-
-    // Записываем студентов в файл
-    val outputDirectory = "src/files"
     val outputFileName = "output_students.txt"
-    studentList.write_to_file(outputDirectory, outputFileName)
-    println("Данные студентов записаны в $outputDirectory/$outputFileName")
-
-
-
-
-
-
-
+    studentList.write_to_file("src/files", outputFileName)
+    println("Данные студентов записаны в $outputFileName")
 
 
 
@@ -103,58 +60,43 @@ fun StudentsGo() {
 
     val filePathJson = "src/files/students.json"
     val studentListJson = Student_list_json(filePathJson)
-    println("\n\n\nСтуденты прочитаны из файла " + filePathJson)
+    println("Студенты прочитаны из файла " + filePathJson)
 
-    // 1. Поиск студента по ID
-    val studentIdToFind = 1
-    try {
-        val foundStudent = studentListJson.findById(studentIdToFind)
-        println("Найден студент: $foundStudent")
-    } catch (e: Exception) {
-        println(e.message)
-    }
+    println("Список 3 из 1: " + studentListJson.get_k_n_student_short_list(3, 1))
 
-    // 2. Получение короткого списка студентов
-    val n1 = 0     // Начальный индекс
-    val k1 = 5    // Количество студентов для получения
-    val shortListJson = studentListJson.get_k_n_student_short_list(n, k)
-    println("Список студентов (по $n1 -му индексу, $k1 студентов): $shortListJson")
+    // Заменим студента с ID 2 на нового студента
+    val newStudent = Student("Student(id=2, firstName=Abram, lastName=Abramov, middleName=Abramovich, phone=+7 (123) 456-78-90, telegram=null, email=abram.abram@example.com, git=abramabram)");
+    studentListJson.replaceById(newStudent, 2)
+    println("\nЗаменен студент с id 2 ")
 
-    // 3. Сортировка студентов по фамилии и инициалам
-    studentListJson.orderStudentsByLastNameInitials()
-    println("Студенты отсортированы по фамилии и инициалам.")
+    println("Удален студент с id 1 ")
+    studentListJson.removeById(1)
 
-    // 4. Добавление нового студента
-    val newStudentJson = Student(id=4, firstName="Игнат", lastName="Прохоров", middleName="Рустамович", phone="+7 (374) 934-93-56", telegram="@rustam", email=null, git="rustam-vas-git")
-    studentListJson.add(newStudent)
-    println("Добавлен новый студент: $newStudent")
+    val n = studentListJson.get_student_short_count()
+    println("Кол-во студентов = " + n)
 
-    // 5. Замена студента по ID
-    val studentToReplace = Student(id=4, firstName="Игнат", lastName="Прохоров", middleName="Рустамович", phone="+7 (374) 934-93-56", telegram="@rustam", email=null, git="rustam-vas-git")
-    try {
-        studentListJson.replaceById(studentToReplace, studentIdToFind)
-        println("Студент с ID $studentIdToFind заменен.")
-    } catch (e: Exception) {
-        println(e.message)
-    }
-
-    // 6. Удаление студента по ID
-    try {
-        studentListJson.removeById(studentIdToFind)
-        println("Студент с ID $studentIdToFind удален.")
-    } catch (e: Exception) {
-        println(e.message)
-    }
-
-    // 7. Получение количества студентов
-    val count = studentListJson.get_student_short_count()
-    println("Количество студентов в списке: $count")
+    val fileNameJson = "output_students.json"
+    studentListJson.write_to_file("src/files", fileNameJson)
+    println("Список студентов успешно записан в файл $fileNameJson.")
 
 
-    val directory = "src/files"
-    val fileName = "output_students.json"
-    studentListJson.write_to_file(directory, fileName)
-    println("Список студентов успешно записан в файл $fileName.")
+
+
+
+    val filePathYaml = "src/files/students.yaml"
+    val studentListYaml = Student_list_yaml(filePathYaml)
+    println("\nСтуденты прочитаны из файла " + filePathYaml)
+
+    val fileNameYaml = "output_students.yaml"
+    studentList.write_to_file("src/files", fileNameYaml)
+    println("Список студентов успешно записан в файл $fileNameYaml")
+
+
+
+
+
+
+
 }
 
 fun checkValidStudent(student: Student) {

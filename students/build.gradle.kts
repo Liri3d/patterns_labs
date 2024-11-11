@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.9.23"
-    kotlin("plugin.serialization") version "1.9.20" // Замените на актуальную версию Kotlin
+    kotlin("plugin.serialization") version "1.9.20"
+
 }
 
 group = "org.korsnaike"
@@ -11,6 +12,7 @@ repositories {
 }
 
 dependencies {
+
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     implementation("com.charleskorn.kaml:kaml:0.61.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
