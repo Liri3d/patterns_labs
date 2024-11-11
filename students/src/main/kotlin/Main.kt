@@ -87,16 +87,12 @@ fun StudentsGo() {
     val studentListYaml = Student_list_yaml(filePathYaml)
     println("\nСтуденты прочитаны из файла " + filePathYaml)
 
+    val nyaml = studentListYaml.get_student_short_count()
+    println("Кол-во студентов = " + nyaml)
+
     val fileNameYaml = "output_students.yaml"
-    studentList.write_to_file("src/files", fileNameYaml)
+    studentListYaml.write_to_file("src/files", fileNameYaml)
     println("Список студентов успешно записан в файл $fileNameYaml")
-
-
-
-
-
-
-
 }
 
 fun checkValidStudent(student: Student) {

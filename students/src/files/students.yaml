@@ -1,48 +1,48 @@
 - id: 1
-  lastName: "John"
-  firstName: "Doe"
-  middleName: "Doe"
-  telegram: "hpmyak"
+  lastName: "Игорев"
+  firstName: "Егор"
+  middleName: "Федорович"
+  telegram: "fdhgnm"
   git: null
   phone: null
   email: null
 - id: 2
-  lastName: "Jane"
-  firstName: "Smith"
-  middleName: "Doe"
-  telegram: "pudge"
+  lastName: "Журавлев"
+  firstName: "Матвей"
+  middleName: "Викторович"
+  telegram: "pdfg"
   git: null
   phone: null
   email: null
 - id: 3
-  lastName: "Bob"
-  firstName: "Johnson"
-  middleName: "Doe"
-  telegram: "sadasdasd"
+  lastName: "Бегемотов"
+  firstName: "Игнат"
+  middleName: "Матвеевич"
+  telegram: "dfhdg"
   git: null
   phone: null
   email: null
 - id: 4
-  lastName: "NewJohn"
-  firstName: "John"
-  middleName: "JOGN"
+  lastName: "Жаворонков"
+  firstName: "Николай"
+  middleName: "Владимирович"
   telegram: null
   git: null
   phone: null
-  email: "jhon@hmail.ru"
+  email: "kolya@hmail.ru"
 - id: 5
-  lastName: "NewJohn"
-  firstName: "John"
-  middleName: "JOGN"
+  lastName: "Федянин"
+  firstName: "Федор"
+  middleName: "Федорович"
   telegram: null
   git: null
   phone: null
-  email: "jhon@hmail.ru"
+  email: fedya@hmail.ru"
 - id: 6
-  lastName: "NewJohn"
-  firstName: "John"
-  middleName: "JOGN"
+  lastName: "Рубежный"
+  firstName: "Роман"
+  middleName: "Романович"
   telegram: null
   git: null
   phone: null
-  email: "jhon@hmail.ru"
+  email: "romka@hmail.ru"
