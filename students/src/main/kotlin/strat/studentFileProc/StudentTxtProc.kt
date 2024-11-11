@@ -1,30 +1,22 @@
-package main.kotlin.strat
+package main.kotlin.strat.studentFileProc
 
-import main.kotlin.pattern.Data_list
-import main.kotlin.pattern.Data_list_student_short
+
+import main.kotlin.strat.Student_list
 import main.kotlin.pattern.Student
-import main.kotlin.pattern.Student_short
+
 import java.io.File
 import java.io.FileNotFoundException
 
 // Работа с коллекцией об-ов Student и получ их из файла
-class Student_list_txt(students: MutableList<Student>) :
- Student_base_list(students) {
-    constructor() : this(mutableListOf())
-
-    constructor(filePath: String) : this(mutableListOf()) {
-        read_from_file(filePath)
-    }
-
-    // Получить список студентов из файла
-    override fun read_from_file(filePath: String) {
+class StudentTxtProc: StudentFileProc {
+    override fun read_from_file(filePath: String): MutableList<Student> {
         val file = File(filePath)
         if (!file.exists() || !file.isFile) {
             throw IllegalArgumentException("Некорректный адрес файла: $filePath")
         }
 
         try {
-            students = file.readLines().mapNotNull { line ->
+            return file.readLines().mapNotNull { line ->
                 try {
                     Student(line)
                 } catch (e: IllegalArgumentException) {
@@ -41,12 +33,13 @@ class Student_list_txt(students: MutableList<Student>) :
     }
 
     // Список студентов в файл
-    override fun write_to_file(directory: String, fileName: String) {
+    override fun write_to_file(students: MutableList<Student>, directory: String, fileName: String) {
         val file = File(directory, fileName)
 
         try {
             file.parentFile?.mkdirs()
             file.bufferedWriter().use { writer ->
+
                 students.forEach { student ->
                     writer.write(student.toString())
                     writer.newLine()

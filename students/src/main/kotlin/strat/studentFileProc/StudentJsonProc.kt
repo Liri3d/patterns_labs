@@ -1,22 +1,18 @@
-package main.kotlin.strat
+package main.kotlin.strat.studentFileProc
 
-import kotlinx.serialization.*
 import main.kotlin.pattern.*
+import main.kotlin.strat.Student_list
+import main.kotlin.strat.studentFileProc.*
+
 import java.io.File
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlin.contracts.Returns
 
-class Student_list_json(students: MutableList<Student> = mutableListOf()) :
-Student_base_list(students) {
-
-    constructor() : this(mutableListOf())
-
-    constructor(filePath: String) : this() {
-        read_from_file(filePath)
-    }
-
-    override fun read_from_file(filePath: String) {
+class StudentJsonProc: StudentFileProc {
+    override fun read_from_file(filePath: String): MutableList<Student> {
         val file = File(filePath)
+        val students: MutableList<Student>
         if (!file.exists() || !file.isFile) {
             throw IllegalArgumentException("Некорректный адрес файла: $filePath")
         }
@@ -25,12 +21,13 @@ Student_base_list(students) {
             val gson = Gson()
             val studentListType = object : TypeToken<MutableList<Student>>() {}.type
             students = gson.fromJson(file.readText(), studentListType) ?: mutableListOf()
+            return students
         } catch (e: Exception) {
             throw IllegalArgumentException("Ошибка при чтении файла JSON: ${e.message}", e)
         }
     }
 
-    override fun write_to_file(directory: String, fileName: String) {
+    override fun write_to_file(students: MutableList<Student>, directory: String, fileName: String) {
         val file = File(directory, fileName)
 
         try {

@@ -1,20 +1,33 @@
 package main.kotlin.strat
 
+import main.kotlin.strat.studentFileProc.*
 import main.kotlin.pattern.Data_list
 import main.kotlin.pattern.Data_list_student_short
 import main.kotlin.pattern.Student
 import main.kotlin.pattern.Student_short
 
-abstract class Student_base_list(protected var students: MutableList<Student>) {
-    constructor() : this(mutableListOf())
+class Student_list(
+    private var students: MutableList<Student>,
+    var fileProcessor: StudentFileProc = StudentYamlProc()
+) {
+    constructor(
+        fileProcessor: StudentFileProc = StudentYamlProc()
+    ) : this(mutableListOf(), fileProcessor)
 
-    constructor(filePath: String) : this(mutableListOf()) {
+    constructor(
+        filePath: String,
+        fileProcessor: StudentFileProc = StudentYamlProc()
+    ) : this(mutableListOf(), fileProcessor) {
         read_from_file(filePath)
     }
 
-    abstract fun read_from_file(filePath: String)
+    fun read_from_file(filePath: String) {
+        students = fileProcessor.read_from_file(filePath)
+    }
 
-    abstract fun write_to_file(directory: String, fileName: String)
+    fun write_to_file(directory: String, fileName: String) {
+        fileProcessor.write_to_file(students, directory, fileName)
+    }
 
     fun findById(id: Int): Student {
         return students.first { it.id == id }
